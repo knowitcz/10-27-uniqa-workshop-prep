@@ -1,9 +1,17 @@
+import { aPolicyList, EXPIRING } from '../builders/policy';
+import {
+  DEFAULT_COVERAGE_PCT,
+  MINIMAL_COVERAGE_FRACTION,
+  RENEWAL_PREMIUM_AT_1_PCT,
+  RENEWAL_PREMIUM_NO_CLAIMS,
+  RENEWAL_PREMIUM_ONE_CLAIM,
+} from '../support/amounts';
 import calculator from '../pages/CalculatorPage';
 
 describe('Calculator form', () => {
   beforeEach(() => {
     // Arrange
-    calculator.open();
+    calculator.open(EXPIRING, aPolicyList());
   });
 
   it('reports two errors on an empty form', () => {
@@ -62,7 +70,7 @@ describe('Calculator form', () => {
     calculator.calculate();
 
     // Assert
-    calculator.verifyPremium('10 000 CZK');
+    calculator.verifyPremium(RENEWAL_PREMIUM_NO_CLAIMS);
   });
 
   it('shows the policy number in the result', () => {
@@ -103,14 +111,14 @@ describe('Calculator form', () => {
     calculator.calculate();
 
     // Assert
-    calculator.verifyPremium('11 500 CZK');
+    calculator.verifyPremium(RENEWAL_PREMIUM_ONE_CLAIM);
   });
 
   it('hides the result after the form is reset', () => {
     // Arrange
     calculator.enterPriorClaims(0);
     calculator.calculate();
-    calculator.verifyPremium('10 000 CZK');
+    calculator.verifyPremium(RENEWAL_PREMIUM_NO_CLAIMS);
 
     // Act
     calculator.reset();
@@ -149,18 +157,18 @@ describe('Calculator form', () => {
     calculator.reset();
 
     // Assert
-    calculator.verifyCoverage('50 %');
+    calculator.verifyCoverage(DEFAULT_COVERAGE_PCT);
   });
 
   it('scales the premium with the chosen coverage', () => {
     // Arrange
     calculator.enterPriorClaims(0);
-    calculator.drag(0.01);
+    calculator.drag(MINIMAL_COVERAGE_FRACTION);
 
     // Act
     calculator.calculate();
 
     // Assert
-    calculator.verifyPremium('200 CZK');
+    calculator.verifyPremium(RENEWAL_PREMIUM_AT_1_PCT);
   });
 });
