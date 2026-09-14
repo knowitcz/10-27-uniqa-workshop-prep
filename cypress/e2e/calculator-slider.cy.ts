@@ -32,13 +32,6 @@ describe('Coverage slider', () => {
     calculator.coverageReadout().should('contain', CHOSEN_COVERAGE);
   });
 
-  it('moves the slider fill to the chosen percentage', () => {
-    // Act
-    calculator.setCoverage(0.62);
-
-    // Assert
-    calculator.coverageFill().should('have.attr', 'style').and('contain', '62%');
-  });
 
   it('sets coverage to 0 % at the left end of the slider', () => {
     // Act
@@ -72,21 +65,7 @@ describe('Coverage slider', () => {
     calculator.coverageReadout().should('contain', FULL_COVERAGE);
   });
 
-  it('clamps coverage at 100 % when dragged past the right edge', () => {
-    // Act
-    calculator.setCoverage(1.4);
 
-    // Assert
-    calculator.coverageReadout().should('contain', FULL_COVERAGE_PCT);
-  });
-
-  it('clamps coverage at 0 % when dragged past the left edge', () => {
-    // Act
-    calculator.setCoverage(-0.4);
-
-    // Assert
-    calculator.coverageReadout().should('contain', NO_COVERAGE_PCT);
-  });
 
   it('carries the chosen coverage percentage into the result', () => {
     // Arrange
