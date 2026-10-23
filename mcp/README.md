@@ -39,6 +39,8 @@ node scripts/mcp-probe.mjs run_e2e_suite   # call one
 | `run_e2e_suite` | counts, plus every failure's test name, spec file, assertion message and code frame |
 | `run_test_file` | the same, for every test in one spec file |
 | `check_environment` | dev server, Node/npm/Cypress versions, whether anything would make a run fail |
+| `get_run_history` | previous runs: when, how long, how many passed and failed |
+| `get_metrics` | flaky tests, regressed tests, slowest tests, most-failed tests |
 
 ### Listing the tests
 
@@ -73,12 +75,21 @@ needs no machinery, and it is already the difference between **6.8 s** for
 
 ## Run history
 
-`mcp/history/` ships with 14 recorded runs. Nothing reads them yet — they are
-the seed for the history tools that arrive in step 3C, so those tools have
-something to show on a machine that has run the suite only once.
+`mcp/history/` ships with 14 runs so `get_run_history` and `get_metrics` return
+something interesting on a machine that has run the suite once. Every run made
+through `run_e2e_suite` is appended there.
 
-Regenerate them with `node scripts/seed-history.mjs` — it seeds from the most
-recent real run, so the test names stay genuine.
+Regenerate the shipped history with `node scripts/seed-history.mjs` — it seeds
+from the most recent real run, so the test names stay genuine.
+
+### Flaky vs regressed
+
+`get_metrics` keeps these apart, because they call for opposite responses:
+
+- **flaky** — failures scattered through the history. Find the race.
+- **regressed** — failures in one unbroken stretch. Find the commit.
+
+Lumping both under "flaky" is the usual mistake and it hides the difference.
 
 ## A note on the dev server
 
