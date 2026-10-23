@@ -71,6 +71,15 @@ no `@cypress/grep` (which does not resolve against Cypress 13 without
 needs no machinery, and it is already the difference between **6.8 s** for
 `policy-list.cy.ts` and about **33 s** for the suite.
 
+## Run history
+
+`mcp/history/` ships with 14 recorded runs. Nothing reads them yet — they are
+the seed for the history tools that arrive in step 3C, so those tools have
+something to show on a machine that has run the suite only once.
+
+Regenerate them with `node scripts/seed-history.mjs` — it seeds from the most
+recent real run, so the test names stay genuine.
+
 ## A note on the dev server
 
 The server reuses a dev server already running on :5173. If there is none it
